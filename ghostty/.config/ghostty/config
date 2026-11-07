@@ -1,0 +1,19 @@
+# Ghostty terminal
+# Docs: https://ghostty.org/docs/config
+
+# Nord theme (shipped builtin)
+theme = Nord
+
+# Font
+font-family = JetBrainsMono Nerd Font
+font-size = 12
+
+# Window
+window-padding-x = 8
+window-padding-y = 4
+background-opacity = 0.96
+window-save-state = always
+
+# Behaviour
+scrollback-limit = 100000000
+mouse-scroll-multiplier = 3

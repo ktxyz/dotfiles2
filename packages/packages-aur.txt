@@ -1,0 +1,10 @@
+claude-desktop
+epson-inkjet-printer-escpr
+kgamma
+libdeep_filter_ladspa-bin
+obs-vaapi
+opencode-beta
+radeon-gpu-profiler
+tracy
+ttf-ms-fonts
+zed-personal-git

@@ -1,0 +1,7 @@
+# ~/.zshrc.local — untracked, personal. Sourced automatically by ~/.zshrc.
+# Machine-specific env vars and exports go here (never commit them).
+#
+# Examples:
+# export EDITOR="nvim"
+# export GOPROXY=...
+# export GITHUB_TOKEN="ghp_..."

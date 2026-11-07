@@ -1,0 +1,25 @@
+# Central git configuration.
+# Per-machine identity lives in ~/.gitconfig.local (untracked) — create it:
+#
+#   [user]
+#       name = Your Name
+#       email = you@example.com
+#       signingkey = ~/.ssh/id_ed25519
+#
+[include]
+	path = ~/.gitconfig.local
+
+# Sign commits and tags with SSH keys (no GPG needed)
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false

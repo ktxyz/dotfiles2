@@ -1,0 +1,6 @@
+# ~/.gitconfig.local — untracked, per-machine identity. Included by .gitconfig.
+# Move this file to ~/.gitconfig.local and fill it in.
+[user]
+	name = Your Name
+	email = you@example.com
+	signingkey = ~/.ssh/id_ed25519

@@ -1,0 +1,89 @@
+# Main prompt structure (two lines: info line + input character)
+format = """
+[░▒▓](fg:#7ea997)\
+$username\
+[](fg:#7ea997 bg:#3b4252)\
+$directory\
+[](fg:#3b4252 bg:#434c5e)\
+$git_branch\
+$git_status\
+[](fg:#434c5e bg:#88c0d0)\
+$c\
+$rust\
+$zig\
+$python\
+[](fg:#88c0d0 bg:#2e3440)\
+$cmd_duration\
+[](fg:#2e3440)\
+$fill\
+$time\
+\n$character"""
+
+# No extra blank lines between prompts
+add_newline = false
+
+# User and host, always shown
+[username]
+show_always = true
+style_user = "bg:#7ea997 fg:#2e3440 bold"
+style_root = "bg:#bf616a fg:#2e3440 bold"
+format = "[$user@$hostname]($style)"
+
+# Working directory
+[directory]
+style = "bg:#3b4252 fg:#e5e9f0 bold"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+# Git segments
+[git_branch]
+symbol = " "
+style = "bg:#434c5e fg:#88c0d0"
+format = '[ $symbol$branch ]($style)'
+
+[git_status]
+style = "bg:#434c5e fg:#ebcb8b"
+format = '[$all_status$ahead_behind ]($style)'
+
+# Language segments (only shown in matching projects)
+[c]
+symbol = " "
+style = "bg:#88c0d0 fg:#2e3440"
+format = '[ $symbol($version) ]($style)'
+
+[rust]
+symbol = " "
+style = "bg:#88c0d0 fg:#2e3440"
+format = '[ $symbol($version) ]($style)'
+
+[zig]
+symbol = " "
+style = "bg:#88c0d0 fg:#2e3440"
+format = '[ $symbol($version) ]($style)'
+
+[python]
+symbol = " "
+style = "bg:#88c0d0 fg:#2e3440"
+format = '[ $symbol($version) ]($style)'
+
+# Duration of commands taking longer than 2s
+[cmd_duration]
+min_time = 2_000
+style = "bg:#2e3440 fg:#d08770"
+format = '[ ⏱ $duration ]($style)'
+
+# Clock on the right side
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "fg:#4c566a"
+format = '[ $time ]($style)'
+
+[fill]
+symbol = " "
+
+# Input character on the second line
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"

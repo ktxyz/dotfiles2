@@ -1,2 +1,60 @@
-# dotfiles2
-Dotfiles V2 - Electric Bungaloo
+# dotfiles2 — Electric Bungaloo
+
+GNU Stow–managed dotfiles for an EndeavourOS (Arch) + KDE Plasma machine.
+Target is `~`; every directory here is one stow package.
+
+## Structure
+
+| Package   | What it stows                                  |
+|-----------|------------------------------------------------|
+| `zsh`     | `~/.zshrc`                                     |
+| `git`     | `~/.gitconfig`, `~/.config/git/ignore`         |
+| `starship`| `~/.config/starship.toml` (Nord powerline)     |
+| `ghostty` | `~/.config/ghostty/config`                     |
+| `zed`     | `~/.config/zed/` (settings + themes)           |
+| `btop`    | `~/.config/btop/`                              |
+| `tmux`    | `~/.tmux.conf` (Nord statusline)               |
+| `nvim`    | `~/.config/nvim/init.lua` (kickstart-style)    |
+| `fastfetch`| `~/.config/fastfetch.jsonc`                   |
+| `packages`| curated package manifests + helper scripts     |
+| `templates` | examples for untracked `~/.zshrc.local`, `~/.gitconfig.local` |
+
+`bootstrap.sh` at the repo root automates the whole bootstrap (below).
+
+## Bootstrap (fresh machine)
+
+```bash
+git clone git@github.com:ktxyz/dotfiles2.git ~/.dotfiles
+cd ~/.dotfiles
+./bootstrap.sh            # tools check, local overlays, stow, packages
+```
+
+Useful flags: `--dry` (simulate stow only), `--no-packages`.
+
+Manual equivalent, if you prefer:
+
+```bash
+sudo pacman -S --needed stow zsh starship ghostty git tmux fzf \
+	eza bat ripgrep zoxide yazi fastfetch
+stow -t ~ zsh git starship ghostty zed btop tmux nvim fastfetch
+packages/install-packages.sh          # optional: restore package set
+```
+
+## Personal, untracked overlays
+
+Anything machine- or identity-specific stays out of the repo:
+
+- `~/.gitconfig.local` — user name/email/signing key
+- `~/.zshrc.local` — env vars, exports (sourced from `.zshrc` if present)
+
+## Packages
+
+- `packages/packages-repo.txt` — repo packages (pacman), one per line
+- `packages/packages-aur.txt` — AUR packages (yay)
+- `packages/install-packages.sh` — install the manifests
+- `packages/export-package-report.sh` — diff current install vs manifest
+
+## Later rounds
+
+Plasma ricing (kwin/kdeglobals), gaming stack (MangoHud, vkBasalt,
+easyeffects) — not tracked yet by design.

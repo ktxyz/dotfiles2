@@ -1,0 +1,12 @@
+# gitignore for ~/.dotfiles
+
+# untracked per-machine / personal overlays (symlinked into ~, never pushed)
+.zshrc.local
+.gitconfig.local
+
+# generated package reports
+packages/.generated/
+
+# stow bookkeeping
+*.orig
+.org/
