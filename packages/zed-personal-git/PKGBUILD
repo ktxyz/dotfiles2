@@ -1,0 +1,122 @@
+# Maintainer: ktxyz <ktxyz@users.noreply.github.com>
+pkgname=zed-personal-git
+_pkgname=zed
+pkgver=1.27.0.r1.g1817e677fe
+pkgrel=1
+pkgdesc='Zed with selection word count in the status bar (personal fork, stable 1.27.x based)'
+arch=(x86_64)
+url=https://github.com/ktxyz/zed
+license=(GPL-3.0-or-later AGPL-3.0-or-later Apache-2.0)
+depends=(alsa-lib
+         curl
+         fontconfig
+         git
+         glib2
+         glibc # libc.so libm.so ld-linux-x86_64.so
+         libgcc
+         libstdc++
+         libxcb # libxcb.so libxcb-xkb.so
+         libx11 # libX11-xcb.so
+         libxkbcommon
+         libxkbcommon-x11
+         netcat
+         'nodejs>=18'
+         npm
+         sqlite
+         vulkan-driver
+         vulkan-icd-loader
+         vulkan-tools
+         wayland
+         zstd)
+makedepends=(cargo
+             clang
+             cmake
+             git
+             protobuf
+             vulkan-headers
+             vulkan-validation-layers)
+optdepends=('org.freedesktop.secrets: to keep you logged into your Zed account')
+provides=("$_pkgname=$pkgver")
+conflicts=("$_pkgname" zed-git)
+source=("zed-personal-git::git+https://github.com/ktxyz/zed.git#branch=personal")
+sha256sums=('SKIP')
+
+_binname=zed
+_appid=dev.zed.Zed
+
+_srcenv() {
+	cd "$pkgname"
+	# Not isolating CARGO_HOME: reuse the user's crate cache across rebuilds.
+	export PATH="${CARGO_HOME:-$HOME/.cargo}/bin:$PATH"
+	export CARGO_PROFILE_RELEASE_DEBUG=2
+	export CARGO_PROFILE_RELEASE_STRIP=false
+	export CARGO_PROFILE_RELEASE_LTO=thin
+	export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
+	export CARGO_PROFILE_RELEASE_OPT_LEVEL=3
+	# rust-toolchain.toml pins the toolchain; do not export RUSTUP_TOOLCHAIN here.
+	CFLAGS+=' -ffat-lto-objects'
+	CXXFLAGS+=' -ffat-lto-objects'
+	RUSTFLAGS+=" --remap-path-prefix $PWD=/"
+	export LIBSQLITE3_SYS_USE_PKG_CONFIG=1
+	export ZSTD_SYS_USE_PKG_CONFIG=1
+}
+
+prepare() {
+	cd "$pkgname"
+	export PATH="${CARGO_HOME:-$HOME/.cargo}/bin:$PATH"
+	cargo fetch --locked
+	export DO_STARTUP_NOTIFY="true"
+	export APP_ICON="zed"
+	export APP_NAME="Zed"
+	export APP_CLI="$_binname"
+	export APP_ID="$_appid"
+	export APP_ARGS="%U"
+	export BRANDING_LIGHT="#99c1f1"
+	export BRANDING_DARK="#1a5fb4"
+	envsubst < "crates/zed/resources/zed.desktop.in" > "$_appid.desktop"
+	envsubst < "crates/zed/resources/flatpak/zed.metainfo.xml.in" > "$_appid.metainfo.xml"
+	sed -i '/@release_info@/d' "$_appid.metainfo.xml"
+	./script/generate-licenses
+}
+
+pkgver() {
+	cd "$pkgname"
+	local base=c84af5b99cbc366d675064e52b23664a015b6e35
+	local commits
+	commits=$(git rev-list --count "$base..HEAD" 2>/dev/null) || commits=0
+	printf '1.27.0.r%s.g%s' "$commits" "$(git log -1 --format=%h)"
+}
+
+build() {
+	_srcenv
+	# Baked in via option_env! at compile time; disables update polling entirely
+	# and turns `zed: check for updates` into a "package manager" prompt.
+	export ZED_UPDATE_EXPLANATION='This is a personal fork; rebuild this package with makepkg after pushing to the personal branch.'
+	export RELEASE_VERSION="$(pkgver)"
+	export PROTOC=/usr/bin/protoc
+	export PROTOC_INCLUDE=/usr/include
+	cargo build --release --frozen --package zed --package cli
+	target/release/cli --completions bash > completions.bash
+	target/release/cli --completions fish > completions.fish
+	target/release/cli --completions zsh > completions.zsh
+}
+
+package() {
+	depends+=(libasound.so
+	          libgio-2.0.so libglib-2.0.so libgobject-2.0.so
+	          libgcc_s.so
+	          libstdc++.so
+	          libxkbcommon.so
+	          libxkbcommon-x11.so
+	          libsqlite3.so
+	          libzstd.so)
+	cd "$pkgname"
+	install -Dm0755 target/release/cli "$pkgdir/usr/bin/$_binname"
+	install -Dm0755 target/release/zed "$pkgdir/usr/lib/$_pkgname/zed-editor"
+	install -Dm0644 -t "$pkgdir/usr/share/applications/" "$_appid.desktop"
+	install -Dm0644 -t "$pkgdir/usr/share/metainfo/" "$_appid.metainfo.xml"
+	install -Dm0644 crates/$_pkgname/resources/app-icon.png "$pkgdir/usr/share/icons/$_pkgname.png"
+	install -Dm0644 completions.bash "$pkgdir/usr/share/bash-completion/completions/$_binname"
+	install -Dm0644 completions.fish "$pkgdir/usr/share/fish/vendor_completions.d/$_binname.fish"
+	install -Dm0644 completions.zsh "$pkgdir/usr/share/zsh/site-functions/_$_binname"
+}

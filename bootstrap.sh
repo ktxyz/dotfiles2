@@ -113,5 +113,15 @@ else
 	fi
 fi
 
+# --- 5. personal zed fork (not on public AUR; needs its own build) ---------------
+printf '\n== Zed (personal fork) ==\n'
+if command -v zed >/dev/null 2>&1; then
+	echo "zed present ($(zed --version 2>/dev/null | head -1))."
+elif ask "Build and install the zed personal fork now? (heavy: one cargo build)"; then
+	"$DOTDIR/packages/build-zed.sh"
+else
+	echo "Later: $DOTDIR/packages/build-zed.sh  (tracked PKGBUILD + fork setup)"
+fi
+
 echo
 echo "Bootstrap complete. Open a new terminal."

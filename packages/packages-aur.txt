@@ -1,5 +1,9 @@
+# AUR packages, installed with yay.
+# NOTE: zed is a PERSONAL FORK; upstream zed is not used.
+# zed-personal-git is NOT on the public AUR — it's your own PKGBUILD, home:
+# locales at packages/zed-personal-git/. Set it up with: ./build-zed.sh
+# (heavy first build — bootstrap.sh offers it automatically).
 claude-desktop
-epson-inkjet-printer-escpr
 kgamma
 libdeep_filter_ladspa-bin
 obs-vaapi
@@ -7,4 +11,3 @@ opencode-beta
 radeon-gpu-profiler
 tracy
 ttf-ms-fonts
-zed-personal-git
