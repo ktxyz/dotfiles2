@@ -56,6 +56,15 @@ source ~/.zprofile
 # Untracked per-machine layer (env vars, exports, personal stuff)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
+# Pi agent harness: session shortcuts
+alias pc='pi --continue'
+alias pn='pi -p'
+
+# Pipe-review: send a diff through a one-shot pi session
+pirev() {
+	git diff "$@" | pi -p "Review this diff. Blocking/Suggested/Nit findings only, file:line refs, no praise."
+}
+
 # Navigation: Ctrl+Arrow jumps by words
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word

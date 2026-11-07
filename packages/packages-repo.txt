@@ -57,6 +57,7 @@ eos-quickstart
 eos-rankmirrors
 eos-settings-plasma
 eza
+fd
 fastfetch
 ffmpegthumbs
 firefox

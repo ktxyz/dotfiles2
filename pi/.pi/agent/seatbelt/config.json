@@ -1,0 +1,5 @@
+{
+  "model": "openrouter/z-ai/glm-flash-latest",
+  "mode": "auto",
+  "shortcut": "alt+s"
+}

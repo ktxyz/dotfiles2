@@ -74,6 +74,57 @@ unused editors removed; `fzf` promoted to explicit. `zed` is a **personal
 fork** — see "Editor setups" above for its dedicated bootstrap via
 `packages/build-zed.sh`.
 
+## Pi coding agent
+
+Pi (1.5+, `pi.dev`) is installed via the official installer and configured
+here.
+
+- **Stow package** `pi/` — links `~/.pi/agent/{settings.json,AGENTS.md}` and
+  `~/.pi/agent/skills/pi-skills` (git submodule) into the managed agent dir.
+  The agent dir itself stays real: it hosts pi's managed runtime (`bin/`,
+  `install/`), sessions, and credentials — never stowed wholesale.
+- **Credentials** — untracked `~/.zshrc.local` exports
+  `OPENROUTER_API_KEY`; pi reads provider env vars natively, no `auth.json`.
+- **Providers**: OpenRouter only. Claude's subscription OAuth is banned for
+  third-party harnesses since 2026-04 (Anthropic ToS) — deliberate choice,
+  do not "fix" it back into auth by reconnecting a Pro/Max subscription.
+  The opencode-go account does not expose API keys.
+- **Models** (verified via `pi --list-models`, 2026-11-08):
+  - default/cheap: `openrouter/z-ai/glm-latest`, thinking `medium`
+  - Sonnet: `openrouter/anthropic/claude-sonnet-5.5`, thinking `medium`
+  - Opus: `openrouter/anthropic/claude-opus-5`, thinking `high`
+  - cycle (Ctrl+P) adds `google/gemini-3*` and `x-ai/grok-4.6`
+- **Packages** (declared + pinned in `settings.json`, auto-installed by pi):
+  seatbelt (approvals), lens, pi-usage, powerline-footer, web-search,
+  ask-user-question, plannotator, subagents, context-prune, memory,
+  pi-skills (submodule), and the à-la-carte archimedes set
+  (`core`, `diff`, `session-name`, `notify`, `image-paste`, `todo`).
+- **Trial-tier, deliberately off**: `billion-context`, `context-mode`
+  (heavier compression/proxy approaches — try with `pi -e npm:<name>`
+  only for marathon sessions).
+- **Shell sugar** (in `zsh/`): `pc` continue, `pn` one-shot, `pirev` (diff
+  review via stdin pipe).
+- **Runtime support**: `qmd` (npm user-prefix, powers `memory_search`) and
+  `fd` (pacman) are required by extensions; pi auto-vendored `fd` into
+  `~/.pi/agent/bin/` once — prefer the system package.
+- **Seatbelt** config (tracked): `pi/.pi/agent/seatbelt/config.json` —
+  classifier on cheap `z-ai/glm-flash-latest`, mode `auto` (learns your
+  approve/reject pattern; cycle modes with `alt+s`). Notes: classifier calls
+  bill to the OpenRouter wallet; a `rm`-class chain can take a couple of
+  seconds to label.
+- **pi-memory**: exit summaries are LLM-called on every quit — pinned to the
+  cheap default via env in `~/.zshrc.local`
+  (`PI_MEMORY_EXIT_SUMMARY_MODEL`, `PI_MEMORY_EXIT_SUMMARY_REASONING_EFFORT=low`).
+- **Keybindings** (tracked): `pi/.pi/agent/keybindings.json` releases
+  `ctrl+v` to archimedes image-paste (the documented unbind of
+  `app.clipboard.pasteImage`).
+- **Prompt templates**: `/review-diff` and `/research` in `pi/.pi/prompts/`.
+- **Security**: `defaultProjectTrust: "ask"`; podman-isolated runs are a
+  future round for unattended/hostile code.
+- **Update**: `pi update` (self), `pi update --extensions` (packages),
+  `pi update --models` (catalog). To bump pinned package versions: edit
+  `packages` in `pi/.pi/agent/settings.json`, run `pi update --extensions`.
+
 ## Later rounds
 
 Plasma ricing (kwin/kdeglobals), gaming stack (MangoHud, vkBasalt,

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://pi.dev/schemas/settings.schema.json",
+  "defaultProvider": "openrouter",
+  "defaultModel": "z-ai/glm-latest",
+  "defaultThinkingLevel": "medium",
+  "modelThinkingLevels": {
+    "openrouter/anthropic/claude-sonnet-5.5": "medium",
+    "openrouter/anthropic/claude-opus-5": "high"
+  },
+  "enabledModels": [
+    "openrouter/z-ai/glm-latest",
+    "openrouter/anthropic/claude-sonnet-5.5",
+    "openrouter/anthropic/claude-opus-5",
+    "openrouter/google/gemini-3*",
+    "openrouter/x-ai/grok-4.6"
+  ],
+  "defaultTools": [
+    "read",
+    "bash",
+    "edit",
+    "write",
+    "+codemode"
+  ],
+  "enableInstallTelemetry": false,
+  "defaultProjectTrust": "ask",
+  "compaction": {
+    "reserveTokens": 50000
+  },
+  "packages": [
+    "npm:pi-seatbelt@0.5.0",
+    "npm:pi-lens@4.4.10",
+    "npm:@narumitw/pi-usage@0.69.2",
+    "npm:pi-powerline-footer@0.22.0",
+    "npm:pi-web-search@1.7.0",
+    "npm:@juicesharp/rpiv-ask-user-question@2.15.0",
+    "npm:@plannotator/pi-extension@0.28.51",
+    "npm:pi-subagents@0.87.0",
+    "npm:pi-context-prune@2.2.0",
+    "npm:pi-memory@0.4.2",
+    "npm:@pi-archimedes/core@2.13.0",
+    "npm:@pi-archimedes/diff@2.13.0",
+    "npm:@pi-archimedes/session-name@2.13.0",
+    "npm:@pi-archimedes/notify@2.13.0",
+    "npm:@pi-archimedes/image-paste@2.13.0",
+    "npm:@pi-archimedes/todo@2.13.0"
+  ],
+  "lastChangelogVersion": "1.5.0",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-lens@4.4.10\",\"scope\":\"user\"}": "4.4.10",
+    "{\"source\":\"npm:@narumitw/pi-usage@0.69.2\",\"scope\":\"user\"}": "0.69.2",
+    "{\"source\":\"npm:pi-powerline-footer@0.22.0\",\"scope\":\"user\"}": "0.22.0",
+    "{\"source\":\"npm:pi-subagents@0.87.0\",\"scope\":\"user\"}": "0.87.0",
+    "{\"source\":\"npm:pi-memory@0.4.2\",\"scope\":\"user\"}": "0.4.2"
+  }
+}

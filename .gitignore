@@ -10,3 +10,7 @@ packages/.generated/
 # stow bookkeeping
 *.orig
 .org/
+
+# pi runtime artifacts that live next to stowed files
+pi/.pi/agent/auth.json
+pi/.pi/agent/trust.json
